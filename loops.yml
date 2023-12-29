@@ -1,0 +1,15 @@
+---
+#usage of loops
+- hosts: web
+  become: true
+
+  tasks:
+    - name: Add a list of users
+      user:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - john
+        - lakshmi
+        - siri
+        - abc

@@ -1,0 +1,17 @@
+---
+# tasks file for httpdserver role
+- name: install httpd
+  become: true
+  package:
+    name: apache2
+    state: present
+- name: copy code
+  become: true
+  copy:
+    content: This is a sample page hosted on apache server using ansible.
+    dest: /var/www/html/index.html
+- name: start httpd
+  become: true
+  service:
+    name: apache2
+    state: started

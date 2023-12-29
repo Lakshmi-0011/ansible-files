@@ -1,0 +1,30 @@
+---
+#usage of vars and handlers
+- hosts: web
+  become: true
+
+  vars:
+    pkgname: httpd
+    html_content: This is a sample HTML page hosted on an Apache HTTP server using ansible
+    httpd_document_root: /var/www/html
+
+  tasks:
+    - name: install apache server
+      yum:
+        name: "{{ pkgname }}"
+        state: present
+    - name: Start Apache HTTP server
+      service:
+        name: "{{ pkgname }}"
+        state: started
+        enabled: true
+    - name: Deploy HTML page
+      copy:
+        content: "{{ html_content }}"
+        dest: "{{ httpd_document_root }}/index.html"
+      notify: Restart Apache
+  handlers:
+    - name: Restart Apache
+      service:
+        name: "{{ pkgname }}"
+        state: restarted
